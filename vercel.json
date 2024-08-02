@@ -9,10 +9,8 @@
         {
             "src":"/(.*)",
             "dest":"api/main.py",
-            "methods": ["GET","POST","PUT","DELETE","PATCH","OPTIONS"],
-            "headers": {
+            "headers":{
                 "Access-Control-Allow-Origin": "*"
-
             }
         }
     ]
