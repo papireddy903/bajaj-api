@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -14,12 +14,11 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-
 class Details(BaseModel):
-    data : List[str]
+    data: List[str]
 
 @app.post("/bfhl")
-async def post_details(request : Details):
+async def post_details(request: Details):
     print(request.data)
     user_id = "john_doe_17091999"
     email = "john@xyz.com"
@@ -41,17 +40,22 @@ async def post_details(request : Details):
                 highest_alphabet_char = char
         highest_alphabet = [highest_alphabet_char]
 
-    return {
-        "is_success": True,
-        "user_id": user_id,
-        "email": email,
-        "roll_number": roll_number,
-        "numbers": numbers,
-        "alphabets": alphabets,
-        "highest_alphabet": highest_alphabet
-    }
-
+    return JSONResponse(
+        content={
+            "is_success": True,
+            "user_id": user_id,
+            "email": email,
+            "roll_number": roll_number,
+            "numbers": numbers,
+            "alphabets": alphabets,
+            "highest_alphabet": highest_alphabet
+        },
+        status_code=200  # Ensure HTTP 200 OK status
+    )
 
 @app.get("/bfhl")
 async def get_details():
-    return { "operation_code " : 1}
+    return JSONResponse(
+        content={"operation_code": 1},
+        status_code=200  # Ensure HTTP 200 OK status
+    )
