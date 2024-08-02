@@ -8,17 +8,19 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
 )
+
 
 class Details(BaseModel):
     data : List[str]
 
 @app.post("/bfhl")
 async def post_details(request : Details):
+    print(request.data)
     user_id = "john_doe_17091999"
     email = "john@xyz.com"
     roll_number = "ABCD123"
