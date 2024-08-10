@@ -50,12 +50,12 @@ async def post_details(request: Details):
             "alphabets": alphabets,
             "highest_alphabet": highest_alphabet
         },
-        status_code=200  # Ensure HTTP 200 OK status
+        status_code=200 
     )
 
 @app.get("/bfhl")
 async def get_details():
     return JSONResponse(
         content={"operation_code": 1},
-        status_code=200  # Ensure HTTP 200 OK status
+        status_code=200  
     )
