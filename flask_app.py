@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import base64
 import os
+import magic  # Python package to detect file types
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -9,18 +10,27 @@ CORS(app)  # Enable CORS for all routes
 # Helper function to validate and process the file
 def process_file(file_b64):
     try:
+        # Decode the base64 string to get the file data
         file_data = base64.b64decode(file_b64)
+        
         # Assuming files are stored temporarily for validation
         temp_file_path = "temp_file"
         with open(temp_file_path, "wb") as f:
             f.write(file_data)
 
+        # Validate file
         file_valid = True
-        file_mime_type = "application/octet-stream"  # Default mime type
+
+        # Use `magic` to detect the MIME type
+        mime = magic.Magic(mime=True)
+        file_mime_type = mime.from_file(temp_file_path)
+        
+        # Calculate file size in KB
         file_size_kb = os.path.getsize(temp_file_path) / 1024
 
-        # You can use additional libraries like `magic` to detect mime type.
+        # Remove the temporary file after processing
         os.remove(temp_file_path)
+        
         return file_valid, file_mime_type, file_size_kb
     except Exception as e:
         print(f"Error processing file: {e}")
